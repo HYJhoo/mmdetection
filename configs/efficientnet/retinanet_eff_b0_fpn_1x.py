@@ -1,17 +1,16 @@
 # model settings
 model = dict(
     type='RetinaNet',
-    pretrained='modelzoo://resnet50',
+    pretrained='http://storage.googleapis.com/public-models/efficientnet-b0-08094119.pth',
     backbone=dict(
-        type='ResNet',
-        depth=50,
-        num_stages=4,
-        out_indices=(0, 1, 2, 3),
-        frozen_stages=1,
-        style='pytorch'),
+        type='EfficientNet',
+        model_name='efficientnet-b0',
+        num_stages=7,
+        out_indices=(1, 2, 4, 6),
+        frozen_stages=2),
     neck=dict(
         type='FPN',
-        in_channels=[256, 512, 1024, 2048],
+        in_channels=[24, 40, 112, 320],
         out_channels=256,
         start_level=1,
         add_extra_convs=True,
@@ -118,7 +117,7 @@ total_epochs = 12
 device_ids = range(8)
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/retinanet_r50_fpn_1x'
+work_dir = './work_dirs/retinanet_eff_b0_fpn_1x'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
